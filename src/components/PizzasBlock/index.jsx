@@ -2,6 +2,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
+
 const PizzasBlock = ({ name, imageUrl, price, types, sizes }) => {
   const availableTypes = ['тонкое', 'традиционное'];
   const [activeType, setActiveType] = useState(types[0]);
@@ -14,6 +15,7 @@ const PizzasBlock = ({ name, imageUrl, price, types, sizes }) => {
   const onSelectSize = (type) => {
     setActiveSize(type);
   };
+
 
   return (
     <div className='pizza-block'>

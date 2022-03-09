@@ -1,8 +1,9 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { setCategory } from '../redux/actions/filters';
-import { Categories, SortPopup, PizzasBlock } from '../components';
+import { fetchPizzas } from '../redux/actions/pizzas';
+import { setCategory, setSortBy } from '../redux/actions/filters';
+import { Categories, SortPopup, PizzasBlock, PizzaLoadingBlock } from '../components';
 
 const categoryNames = ['Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
 const sortItems = [
@@ -12,25 +13,44 @@ const sortItems = [
 ];
 
 const Home = () => {
-  const items = useSelector((state) => {
+  const { items, isLoaded } = useSelector((state) => {
     const { pizzas } = state;
-    return pizzas.items;
+    return { items: pizzas.items, isLoaded: pizzas.isLoaded };
+  });
+
+  const { category, sortBy } = useSelector((state) => {
+    const { filter } = state;
+    return filter;
   });
 
   const dispatch = useDispatch();
-  const onClickItem = React.useCallback((id) => {
+
+  React.useEffect(() => {
+    dispatch(fetchPizzas());
+  }, [category, sortBy]);
+
+  const onClickCategory = React.useCallback((id) => {
     dispatch(setCategory(id));
   }, []);
+
+  const onClickSort= React.useCallback((type) => {
+    dispatch(setSortBy(type));
+  }, []);
+  
 
   return (
     <div className='container'>
       <div className='content__top'>
-        <Categories items={categoryNames} onClickItem={onClickItem} />
-        <SortPopup items={sortItems} />
+        <Categories items={categoryNames} categoryId={category} onClickCategory={onClickCategory} />
+        <SortPopup items={sortItems} sortByType={sortBy} onClickSort={onClickSort}/>
       </div>
       <h2 className='content__title'>Все пиццы</h2>
       <div className='content__items'>
-        {items && items.map((pizza) => <PizzasBlock key={pizza.id} {...pizza} />)}
+        {isLoaded
+          ? items.map((pizza) => <PizzasBlock key={pizza.id} {...pizza} />)
+          : Array(12)
+              .fill(0)
+              .map((_, id) => <PizzaLoadingBlock key={id} />)}
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 const initialState = {
-  category: 0,
+  category: null,
   sortBy: 'popular',
 };
 
@@ -13,7 +13,7 @@ const filtersReducer = (state = initialState, action) => {
       case 'SET_CATEGORY':
       return {
         ...state,
-        sortBy: action.payload,
+        category: action.payload,
       };
     default:
       return state;
