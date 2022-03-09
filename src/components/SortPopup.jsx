@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, memo } from 'react';
 
-const SortPopup = ({ items }) => {
+const SortPopup = memo(({ items }) => {
   const [visiblePopup, setVisiblePopup] = useState(false);
   const sortRef = useRef();
   const toggleVisiblePopup = () => {
@@ -18,7 +18,7 @@ const SortPopup = ({ items }) => {
     setActiveItem(id);
     setVisiblePopup(false);
   };
-  const activeSort = items[activeItem];
+  const activeSort = items[activeItem].name;
 
   return (
     <div ref={sortRef} className='sort'>
@@ -43,14 +43,14 @@ const SortPopup = ({ items }) => {
         <div className='sort__popup'>
           <ul>
             {items &&
-              items.map((item, id) => {
+              items.map((obj, id) => {
                 return (
                   <li
                     onClick={() => onSelectItem(id)}
-                    key={`${item}_${id}`}
+                    key={`${obj.type}_${id}`}
                     className={id === activeItem ? 'active' : null}
                   >
-                    {item}
+                    {obj.name}
                   </li>
                 );
               })}
@@ -59,6 +59,6 @@ const SortPopup = ({ items }) => {
       )}
     </div>
   );
-};
+});
 
 export default SortPopup;
