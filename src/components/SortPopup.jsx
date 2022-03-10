@@ -7,8 +7,9 @@ const SortPopup = memo(({ items, sortByType, onClickSort }) => {
   const toggleVisiblePopup = () => {
     setVisiblePopup(!visiblePopup);
   };
-  const handelOutsideClick = (e) => {
-    if (!e.path.includes(sortRef.current)) setVisiblePopup(false);
+  const handelOutsideClick = (event) => {
+    const path =  event.path || (event.composedPath && event.composedPath());
+    if (!path.includes(sortRef.current)) setVisiblePopup(false);
   };
   useEffect(() => {
     document.body.addEventListener('click', handelOutsideClick);
@@ -46,7 +47,7 @@ const SortPopup = memo(({ items, sortByType, onClickSort }) => {
               items.map((obj, id) => {
                 return (
                   <li
-                    onClick={() => onSelectItem(obj.type)}
+                    onClick={() => onSelectItem(obj)}
                     key={`${obj.type}_${id}`}
                     className={obj.type === sortByType ? 'active' : null}
                   >

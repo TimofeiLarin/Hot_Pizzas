@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import Button from './Button';
+import ButtonBasket from './ButtonBasket';
 import logo from '../assets/img/pizza-logo.svg';
 
 const Header = () => {
@@ -17,7 +17,7 @@ const Header = () => {
         </Link>
         <div className='header__cart'>
           <Link to='/cart'>
-            <Button />
+            <ButtonBasket />
           </Link>
         </div>
       </div>
