@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 
 const Categories = memo(({ items, onClickCategory, categoryId }) => {
- console.log(categoryId)
   return (
     <div className='categories'>
       <ul>
